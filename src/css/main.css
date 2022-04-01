@@ -1,0 +1,32 @@
+#input {
+  resize: none;
+}
+
+.auto-input {
+  position: relative;
+  resize: none;
+}
+.auto-input:hover {
+  cursor: pointer;
+}
+.auto-input.active {
+  cursor: pointer;
+}
+
+.preview {
+  margin-top: 1rem;
+  font-weight: 700;
+}
+
+.board {
+  margin-top: 0.3rem;
+  background-color: #e0e0e0;
+  min-height: 5rem;
+  border-radius: 1rem;
+  -webkit-border-radius: 1rem;
+  -moz-border-radius: 1rem;
+  -ms-border-radius: 1rem;
+  -o-border-radius: 1rem;
+}
+
+/*# sourceMappingURL=main.css.map */
