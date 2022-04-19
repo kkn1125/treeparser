@@ -3,13 +3,20 @@
  * 
  * 파일 트리 파싱 : 테스트
  * 
- * @author      kimson <chaplet01@gmail.com>
- * @github      https://github.com/kkn1125
- * @written_at  2022-04-19 13:07:01
+ * @author   kimson <chaplet01@gmail.com>
+ * @github   https://github.com/kkn1125
+ * @written  2022-04-19 13:07:01
+ * @modified 2022-04-19 21:26:59
+ * @since    v0.1.0
+ */
+
+/**
+ * @jest-environment jsdom
  */
 
 "use strict";
 
+import { getElement } from "../assets/core/module/parts/constant.js";
 import {
     OptionalParser
 } from "../assets/core/parser.js";
@@ -248,15 +255,11 @@ describe("구동 테스트", () => {
     });
 
     test("객체 배열 첫 번째 브랜치 판별 테스트 - 형제 유무", () => {
-        const parser                 = new TreeParser();
-        const trimedSources          = SAMPLE_SCATTERED_HOLE.trim();
-        const convertedArray         = parser.stringToArray(trimedSources);
-        const numberOfBlanks         = parser.countIndences(convertedArray);
-        const addedThirdBranchArray  = parser.addThirdBranch(numberOfBlanks);
-        const addedSecondBranchArray = parser.addSecondBranch(addedThirdBranchArray);
-        const addedFirstBranchArray  = parser.addFirstBranch(addedSecondBranchArray);
+        const parser         = new TreeParser();
+        const trimedSources  = SAMPLE_SCATTERED_HOLE.trim();
+        const convertedArray = parser.parse(trimedSources).getParsedLines();
 
-        expect(addedFirstBranchArray).toStrictEqual([
+        expect(convertedArray).toStrictEqual([
             {
                 directoryName: "test",
                 numberOfIndences: 0,
@@ -322,5 +325,50 @@ describe("구동 테스트", () => {
                 vertical: [],
             },
         ]);
+    });
+
+    describe("파일 트리 출력 테스트", () => {;
+        const parser         = new TreeParser();
+        const trimedSources  = SAMPLE_SCATTERED_HOLE.trim();
+        const convertedArray = parser.parse(trimedSources);
+        const app = document.createElement("div");
+        app.id = "#app";
+
+        expect(parser.renderTree()).toStrictEqual(`<div class="parsed-data">
+        └┬─test
+    </div><div class="parsed-data">
+        　├┬─asd
+    </div><div class="parsed-data">
+        　│├──qwe
+    </div><div class="parsed-data">
+        　│├──gfhj
+    </div><div class="parsed-data">
+        　│├┬─ads
+    </div><div class="parsed-data">
+        　││└──fgd
+    </div><div class="parsed-data">
+        　│└──sdfg
+    </div><div class="parsed-data">
+        　└──cbv
+    </div>`);
+
+        expect(parser.renderTree(app)).toBeUndefined();
+        expect(app.innerHTML).toStrictEqual(`<div class="parsed-data">
+        └┬─test
+    </div><div class="parsed-data">
+        　├┬─asd
+    </div><div class="parsed-data">
+        　│├──qwe
+    </div><div class="parsed-data">
+        　│├──gfhj
+    </div><div class="parsed-data">
+        　│├┬─ads
+    </div><div class="parsed-data">
+        　││└──fgd
+    </div><div class="parsed-data">
+        　│└──sdfg
+    </div><div class="parsed-data">
+        　└──cbv
+    </div>`);
     });
 });

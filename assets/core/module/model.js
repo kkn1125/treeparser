@@ -3,9 +3,11 @@
  * 
  * 파일 트리 파싱 : 트리 파싱에 핵심이 되는 Model 제어
  * 
- * @author      kimson <chaplet01@gmail.com>
- * @github      https://github.com/kkn1125
- * @written_at  2022-04-19 13:07:01
+ * @author   kimson <chaplet01@gmail.com>
+ * @github   https://github.com/kkn1125
+ * @written  2022-04-19 13:07:01
+ * @modified 2022-04-19 21:26:59
+ * @since    v0.1.0
  * @references  code convention
  *              ├─ (https://dkje.github.io/2020/08/03/CleanCodeSeries2-copy)
  *              └─ (https://itmining.tistory.com/72)
@@ -29,55 +31,23 @@ import {
 import { BRANCH_FIRST_BROTHER, BRANCH_FIRST_ONLY } from "./parts/constant.js";
 
 const Model = function () {
-    let convertedLines, parsedLines;
+    let convertedLines, parsedLines, views;
 
     /**
      * @function Model.init
      */
-    this.init = function () {
-
+    this.init = function (view) {
+        views = view;
     }
 
     /** ================================ */
     /**            메인 메서드            */
     /** ================================ */
 
-    // istanbul ignore next
-    /**
-     * 원문 파싱 후 브랜치를 그림
-     * 
-     * @param {string} source 
-     * @returns {string[]}
-     */
-    this.parse = function (source) {
-        convertedLines = this.stringToArray(source);
-        parsedLines = this.parseLines(convertedLines);
-    }
-
-    /**
-     * 원문 소스를 공백 제거된 줄(line) 단위 배열로 변환
-     * @param {string[]} source 
-     * @returns 
-     */
-    this.stringToArray = function (source) {
-        const trimSources = source.trim();
-        const splitedLines = this.separateLine(trimSources);
-        const filteredLines = this.filterEmptyLine(splitedLines);
-
-        return filteredLines;
-    }
-
-    /**
-     * View 단에 출력하기 전 마지막 데이터 가공 상태 반환
-     * @param {Object[]} lines 
-     * @returns {Object[]}
-     */
-    this.parseLines = function (lines) {
-        const convertedCountIndenceArray = this.countIndences(lines);
-        const addedThirdBranchArray = this.addThirdBranch(convertedCountIndenceArray);
-        const addedSecondBranchArray = this.addSecondBranch(addedThirdBranchArray);
-        const addedFirstBranchArray = this.addFirstBranch(addedSecondBranchArray);
-        return addedFirstBranchArray;
+    this.renderParsedTree = function (contents, app) {
+        this.parse(contents);
+        const parsedContents = this.getParsedLines();
+        this.renderTree(app);
     }
 
     /**
@@ -96,11 +66,56 @@ const Model = function () {
      * 2. 두 번째 브랜치 기호 : 하위 레벨 파일 존재할 때
      * 3. 세 번째 브랜치 기호 : 파일이 존재할 때 (항상 동일)
      * 
-     * @function drawBranch
-     * @param {string[]} filteredLines
+     * @function renderTree
+     * @param {string} app
      */
-    this.drawBranch = function (filteredLines) {
+     this.renderTree = function (app) {
+        return views.renderTree(parsedLines, app);
+    }
 
+    // istanbul ignore next
+    /**
+     * 원문 파싱 후 브랜치를 그림
+     * 
+     * @param {string} source 
+     * @returns {string[]}
+     */
+    this.parse = function (source) {
+        convertedLines = this.stringToArray(source);
+        parsedLines    = this.parseLines(convertedLines);
+
+        return this;
+    }
+
+    this.getParsedLines = function () {
+        return parsedLines;
+    }
+
+    /**
+     * 원문 소스를 공백 제거된 줄(line) 단위 배열로 변환
+     * @param {string[]} source 
+     * @returns 
+     */
+    this.stringToArray = function (source) {
+        const trimSources   = source.trim();
+        const splitedLines  = this.separateLine(trimSources);
+        const filteredLines = this.filterEmptyLine(splitedLines);
+
+        return filteredLines;
+    }
+
+    /**
+     * View 단에 출력하기 전 마지막 데이터 가공 상태 반환
+     * @param {Object[]} lines 
+     * @returns {Object[]}
+     */
+    this.parseLines = function (lines) {
+        const convertedCountIndenceArray = this.countIndences(lines);
+        const addedThirdBranchArray      = this.addThirdBranch(convertedCountIndenceArray);
+        const addedSecondBranchArray     = this.addSecondBranch(addedThirdBranchArray);
+        const addedFirstBranchArray      = this.addFirstBranch(addedSecondBranchArray);
+
+        return addedFirstBranchArray;
     }
 
     /** ================================ */
@@ -114,9 +129,9 @@ const Model = function () {
      * @returns {string[]}
      */
     this.separateLine = function (trimSources) {
-        const IS_NO_TEXT = (!trimSources);
+        const IS_NO_TEXT    = (!trimSources);
         const IS_ZERO_FIELD = (trimSources.length == 0);
-        const EMPTY_ARRAY = [];
+        const EMPTY_ARRAY   = [];
 
         if (IS_NO_TEXT || IS_ZERO_FIELD) return EMPTY_ARRAY;
 

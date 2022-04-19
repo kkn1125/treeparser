@@ -3,9 +3,11 @@
  * 
  * 파일 트리 파싱 : 배열 필터에 사용되는 predicate 함수
  * 
- * @author      kimson <chaplet01@gmail.com>
- * @github      https://github.com/kkn1125
- * @written_at  2022-04-19 13:07:01
+ * @author   kimson <chaplet01@gmail.com>
+ * @github   https://github.com/kkn1125
+ * @written  2022-04-19 13:07:01
+ * @modified 2022-04-19 21:26:59
+ * @since    v0.1.0
  */
 
 "use strict";
@@ -13,11 +15,13 @@
 import {
     BRANCH_SECOND_CHILD,
     BRANCH_SECOND_ONLY,
-    BRANCH_THIRD_ONLY
+    BRANCH_THIRD_ONLY,
+    BRANCH_VERTICAL_ONLY
 } from "./constant.js";
 
 import {
-    BLANK
+    BLANK,
+    EACH_TEXT
 } from "./regexp.js";
 
 // istanbul ignore next
@@ -104,6 +108,43 @@ function withoutLastLine(line) {
     return line;
 }
 
+// istanbul ignore next
+/**
+ * vertical에 등록된 수직선 위치 번호를 대조하고 수직 브랜치를 반환
+ * @param {int[]} vertical 
+ * @param {string} line 
+ * @param {int} idx 
+ * @returns {boolean}
+ * @see treeFormatter
+ */
+function changeBrotherToVertical(vertical, line, idx) {
+    return vertical.some(compare => (compare === idx)) ? BRANCH_VERTICAL_ONLY : line;
+}
+
+// istanbul ignore next
+/**
+ * collector의 마지막 라인 제거
+ * @param {string} line 
+ * @returns {int}
+ */
+function treeFormatter(line) {
+    const {
+        numberOfIndences,
+        vertical,
+        first,
+        second,
+        third,
+        directoryName
+    } = line;
+
+    const whitespace = '　'.repeat(numberOfIndences);
+    const whitespaceWithVertical = whitespace.split(EACH_TEXT).map(changeBrotherToVertical.bind(this, vertical)).join('');
+
+    return `<div class="parsed-data">
+        ${whitespaceWithVertical}${first}${second}${third}${directoryName}
+    </div>`;
+}
+
 export {
     isEmpty,
     setThirdBranch,
@@ -111,4 +152,5 @@ export {
     setFirstBranch,
     countMatchedIndencesOrZero,
     withoutLastLine,
+    treeFormatter,
 }

@@ -1,3 +1,16 @@
+/**!
+ * Copyright 2022. kkn1125 All rights reserved.
+ * 
+ * 파일 트리 파싱 : 상태관리
+ * 추후 확장성 및 클린코드 작업을 위함
+ * 
+ * @author   kimson <chaplet01@gmail.com>
+ * @github   https://github.com/kkn1125
+ * @written  2022-04-19 13:07:01
+ * @modified 2022-04-19 21:26:59
+ * @since    v0.1.0
+ */
+
 const isBase = function () {return [...arguments].some(compare=>location.hostname == compare)};
 
 /* istanbul ignore next */
