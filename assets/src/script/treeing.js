@@ -12,7 +12,7 @@
 
 "use strict";
 
-import { SAMPLE_BUG, SAMPLE_SCATTERED_HOLE } from '../../../__test__/sample.js';
+// import { SAMPLE_BUG, SAMPLE_SCATTERED_HOLE } from '../../../__test__/sample.js';
 import { getElement } from '../../core/module/parts/constant.js';
 import {
     OptionalParser
@@ -24,6 +24,6 @@ const options = {
 
 const TreeParser    = OptionalParser.init(options);
 const parser        = new TreeParser();
-const trimedSources = SAMPLE_BUG.trim();
+// const trimedSources = SAMPLE_BUG.trim();
 
-const a = parser.parse(trimedSources).renderTree(getElement(options.app));
+// const a = parser.parse(trimedSources).renderTree(getElement(options.app));
