@@ -3,9 +3,11 @@
  * 
  * 파일 트리 파싱 : 코어 자바스크립트
  * 
- * @author      kimson <chaplet01@gmail.com>
- * @github      https://github.com/kkn1125
- * @written_at  2022-04-19 13:07:01
+ * @author   kimson <chaplet01@gmail.com>
+ * @github   https://github.com/kkn1125
+ * @written  2022-04-19 13:07:01
+ * @modified 2022-04-19 21:26:59
+ * @since    v0.1.0
  */
 
 "use strict";
@@ -30,13 +32,12 @@ const OptionalParser = (function () {
             const view = new View();
 
             controller.init(model);
-
             model.init(view);
             view.init(options);
 
-            return function Parser() {
-                Model.call(this);
-            }
+            function Parser() {};
+            Object.keys(model).forEach(key => Parser.prototype[key] = model[key]);
+            return Parser;
         }
     }
 })();
