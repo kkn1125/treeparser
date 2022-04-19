@@ -6,55 +6,23 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-        <link rel="stylesheet" href="src/css/main.css">
+        <link rel="stylesheet" href="assets/src/css/main.css">
         <title>File Tree</title>
     </head>
 
     <body>
-        <div class="mt-5"></div>
-        <div class="container">
-            <h1>File Tree</h1>
-            <nav>
-                <ul class="navbar-nav my-3">
-                    <li class="nav-item">
-                        <span class="badge bg-success">Author</span>
-                        <span class="badge text-dark">kimson</span>
-                    </li>
-                    <li>
-                        <hr>
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn btn-info" href="coverage/lcov-report/index.html">커버리지 확인</a>
-                    </li>
-                </ul>
-            </nav>
-            <div class="alert alert-warning">현재 테스트 코드 작성 중이며, 완료되는데로 화면에 실시간으로 그리는 기능을 추가할 예정입니다.</div>
-            <div class="d-flex mb-5" style="gap: 1rem;">
-                <div class="col-3">
-                    <label class="form-label" for="sep">구분자</label>
-                    <select id="sep" class="form-select options">
-                        <option value="">구분자 선택</option>
-                        <option value=":">:</option>
-                        <option value="<">&lt;</option>
-                        <option value=">">&gt;</option>
-                        <option value="|">|</option>
-                        <option value="*">*</option>
-                    </select>
-                </div>
-                <div class="col-3">
-                    <label class="form-label" for="indent">들여쓰기</label>
-                    <input class="form-control options" type="number" id="indent" value="2" min="1" max="10">
-                </div>
-            </div>
-
-            <div id="tree">
-                <textarea rows="10" class="form-control auto-input"></textarea>
-            </div>
+        <nav id="gnb" class="d-flex p-3">
+            <span class="h5 m-0 fw-bold">
+                <a class="brand" href="/">File Tree</a>
+            </span>
+        </nav>
+        <div class="container mt-5">
+            <div class="h3 fw-bold">test</div>
             <div id="app"></div>
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-        <script src="./src/script/treeing.js"></script>
+        <script src="assets/src/script/treeing.js" type="module"></script>
     </body>
 
 </html>
