@@ -6,7 +6,7 @@
  * @author   kimson <chaplet01@gmail.com>
  * @github   https://github.com/kkn1125
  * @written  2022-04-19 13:07:01
- * @modified 2022-04-19 21:26:59
+ * @modified 2022-04-21 11:32:29
  * @since    v0.1.0
  */
 
@@ -27,7 +27,7 @@ const BRANCH_THIRD_ONLY    = "─";
 
 /**
  * 아이디, 클래스명을 받아 해당하는 엘리먼트로 반환
- * @param {string} name 
+ * @param   {string} name 
  * @returns 
  */
 const getElement = function (name) {

@@ -6,13 +6,15 @@
  * @author   kimson <chaplet01@gmail.com>
  * @github   https://github.com/kkn1125
  * @written  2022-04-19 13:07:01
- * @modified 2022-04-19 21:26:59
+ * @modified 2022-04-21 11:32:29
  * @since    v0.1.0
  */
 
 "use strict";
 
 import {
+    BRANCH_FIRST_BROTHER,
+    BRANCH_FIRST_ONLY,
     BRANCH_SECOND_CHILD,
     BRANCH_SECOND_ONLY,
     BRANCH_THIRD_ONLY,
@@ -24,10 +26,18 @@ import {
     EACH_TEXT
 } from "./regexp.js";
 
+/**
+ * 스택에 수직 브랜치가 들어가는 곳을 플래그 형식으로 넣고 빼는 용도
+ * @member {int[]} stack
+ * @see    setFirstBranch
+ * @since  v0.2.0
+ */
+let stack = [];
+
 // istanbul ignore next
 /**
  * 빈 문자열 판별
- * @param {string} line 
+ * @param   {string} line 
  * @returns {string}
  */
 function isEmpty(line) {
@@ -36,7 +46,7 @@ function isEmpty(line) {
 
 /**
  * 문자열의 공백 개수 산출, 없으면 0 반환
- * @param {string} line 
+ * @param   {string} line 
  * @returns {int}
  */
 function countMatchedIndencesOrZero(line) {
@@ -44,6 +54,11 @@ function countMatchedIndencesOrZero(line) {
     return (line.length > 0) && matcher ? matcher.length : 0;
 }
 
+/**
+ * 공통 연결 브랜치 지정
+ * @param   {string} line 
+ * @returns {Object}
+ */
 function setThirdBranch(line) {
     return {
         ...line,
@@ -53,10 +68,10 @@ function setThirdBranch(line) {
 
 /**
  * 두 번째 브랜치 자식 유무에 따라 브랜치 선택
- * @param {Object} line 
- * @param {Integer} idx 
- * @param {Object[]} origin 
- * @returns 
+ * @param   {Object}   line 
+ * @param   {Integer}  idx 
+ * @param   {Object[]} origin 
+ * @returns {Object}
  */
 function setSecondBranch(line, idx, origin) {
     let branch = BRANCH_SECOND_ONLY;
@@ -78,53 +93,79 @@ function setSecondBranch(line, idx, origin) {
 
 /**
  * 첫 번째 브랜치 형제가 존재하는지 배열에 담아 브랜치 선택에 사용
- * @param {Object[]} addedSecondBranchArray 
+ * @param   {Object[]} addedSecondBranchArray 
  * @returns {Object[]}
  */
-function setFirstBranch(addedSecondBranchArray) {
-    const collector = [];
+function setFirstBranch(line, lineid, origin) {
+    let finder;
 
-    addedSecondBranchArray.forEach(function (line, idx) {
-        if (!collector[line.numberOfIndences]) {
-            collector[line.numberOfIndences] = [];
+    /**
+     * 자식이 없으면 first branch only
+     * 형제가 있어도 내려갈때 막히면 first branch only
+     * 형제가 있으면 first branch brother
+     */
+    const nextLines = origin.slice(lineid + 1);
+    
+    for(finder of nextLines) {
+        if(!line.vertical) line.vertical = [];
+
+        if(!line.vertical[line.numberOfIndences])
+        stack[line.numberOfIndences] = line.numberOfIndences;
+
+        const copyVertical = stack.filter(number => typeof number === 'number').slice(0);
+
+        if(copyVertical.length > 1) {
+            line.vertical = copyVertical.slice(0, copyVertical.length-1);
+        } else {
+            line.vertical = copyVertical;
         }
 
-        collector[line.numberOfIndences].push(line);
-    });
-
-    return collector;
-}
-
-/**
- * collector의 마지막 라인 제거
- * @param {string} line 
- * @returns {int}
- */
-function withoutLastLine(line) {
-    if (line.length > 0) {
-        line.pop();
+        if(line.numberOfIndences > finder.numberOfIndences) {
+            delete stack[line.numberOfIndences];
+            return {
+                ...line,
+                first: BRANCH_FIRST_ONLY
+            }
+        } else if(line.numberOfIndences === finder.numberOfIndences) {
+            return {
+                ...line,
+                first: BRANCH_FIRST_BROTHER
+            }
+        }
     }
 
-    return line;
+    delete stack[line.numberOfIndences];
+
+    return {
+        ...line,
+        first: BRANCH_FIRST_ONLY,
+        vertical: [],
+    }
 }
 
-// istanbul ignore next
 /**
- * vertical에 등록된 수직선 위치 번호를 대조하고 수직 브랜치를 반환
- * @param {int[]} vertical 
- * @param {string} line 
- * @param {int} idx 
- * @returns {boolean}
- * @see treeFormatter
+ * 버티컬 인덱스에 매치되는 공백을 수직 선으로 치환
+ * @function changeBrotherToVertical
+ * @param    {int[]}  vertical 
+ * @param    {string} blank 
+ * @param    {int}    idx 
+ * @returns  {string}
+ * @see      treeFormatter
  */
-function changeBrotherToVertical(vertical, line, idx) {
-    return vertical.some(compare => (compare === idx)) ? BRANCH_VERTICAL_ONLY : line;
+function changeBrotherToVertical(vertical, blank, idx) {
+    vertical.forEach(number => {
+        if(idx === number) {
+            blank = BRANCH_VERTICAL_ONLY;
+        }
+    });
+
+    return blank;
 }
 
 // istanbul ignore next
 /**
  * collector의 마지막 라인 제거
- * @param {string} line 
+ * @param   {string} line 
  * @returns {int}
  */
 function treeFormatter(line) {
@@ -151,6 +192,5 @@ export {
     setSecondBranch,
     setFirstBranch,
     countMatchedIndencesOrZero,
-    withoutLastLine,
     treeFormatter,
 }

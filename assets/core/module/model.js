@@ -3,20 +3,19 @@
  * 
  * 파일 트리 파싱 : 트리 파싱에 핵심이 되는 Model 제어
  * 
- * @author   kimson <chaplet01@gmail.com>
- * @github   https://github.com/kkn1125
- * @written  2022-04-19 13:07:01
- * @modified 2022-04-19 21:26:59
- * @since    v0.1.0
- * @references  code convention
- *              ├─ (https://dkje.github.io/2020/08/03/CleanCodeSeries2-copy)
- *              └─ (https://itmining.tistory.com/72)
+ * @author     kimson <chaplet01@gmail.com>
+ * @github     https://github.com/kkn1125
+ * @written    2022-04-19 13:07:01
+ * @modified   2022-04-21 11:32:29
+ * @since      v0.1.0
+ * @references code convention
+ *             ├─ (https://dkje.github.io/2020/08/03/CleanCodeSeries2-copy)
+ *             └─ (https://itmining.tistory.com/72)
  */
 
 "use strict";
 
 import {
-    BLANK,
     LINE
 } from "./parts/regexp.js";
 
@@ -25,10 +24,8 @@ import {
     countMatchedIndencesOrZero,
     setThirdBranch,
     setSecondBranch,
-    withoutLastLine,
     setFirstBranch,
 } from "./parts/filterTools.js";
-import { BRANCH_FIRST_BROTHER, BRANCH_FIRST_ONLY } from "./parts/constant.js";
 
 const Model = function () {
     let convertedLines, parsedLines, views;
@@ -43,10 +40,9 @@ const Model = function () {
     /** ================================ */
     /**            메인 메서드            */
     /** ================================ */
-
+    // istanbul ignore next
     this.renderParsedTree = function (contents, app) {
         this.parse(contents);
-        const parsedContents = this.getParsedLines();
         this.renderTree(app);
     }
 
@@ -87,14 +83,18 @@ const Model = function () {
         return this;
     }
 
+    /**
+     * 파싱된 객체 반환
+     * @returns {Object}
+     */
     this.getParsedLines = function () {
         return parsedLines;
     }
 
     /**
      * 원문 소스를 공백 제거된 줄(line) 단위 배열로 변환
-     * @param {string[]} source 
-     * @returns 
+     * @param {string} source 
+     * @returns {string[]}
      */
     this.stringToArray = function (source) {
         const trimSources   = source.trim();
@@ -154,8 +154,9 @@ const Model = function () {
      * @returns {Object}
      */
     this.countIndences = function (lines) {
-        function collectBlank(line) {
+        function collectBlank(line, id) {
             return {
+                lineId: id,
                 numberOfIndences: countMatchedIndencesOrZero(line),
                 directoryName: line.trim(),
             }
@@ -174,7 +175,7 @@ const Model = function () {
     }
 
     /**
-     * 
+     * 자식 요소 판별해서 second 브랜치 기호 작성
      * @param {Object[]} indenceCountedArray 
      * @returns {Object[]}
      */
@@ -182,29 +183,18 @@ const Model = function () {
         return addedThirdBranchArray.map(setSecondBranch);
     }
 
+    /**
+     * 형제요소 연속 및 자식요소, 마지막 요소 판별
+     * first 브랜치 기호 작성
+     * vertical 브랜치 기호 작성
+     * @param {Object[]} addedSecondBranchArray 
+     * @returns {Object[]}
+     * @since v0.2.0
+     */
     this.addFirstBranch = function (addedSecondBranchArray) {
-        const collector = setFirstBranch(addedSecondBranchArray);
+        const containsFirstBranch = addedSecondBranchArray.map(setFirstBranch);
 
-        const filterLastLineCollector = collector.map(withoutLastLine);
-        
-        return addedSecondBranchArray.map((line, idx) => {
-            const hasBrother = filterLastLineCollector[line.numberOfIndences].some(compare => (compare === line));
-
-            filterLastLineCollector.forEach((compare, compareIndex) => {
-                if(!line.vertical) line.vertical = [];
-
-                if(line.numberOfIndences > compareIndex) {
-                    if(compare.length > 0) {
-                        line.vertical.push(compareIndex);
-                    }
-                }
-            });
-
-            return {
-                ...line,
-                first: hasBrother ? BRANCH_FIRST_BROTHER : BRANCH_FIRST_ONLY,
-            }
-        });
+        return containsFirstBranch;
     }
 }
 
