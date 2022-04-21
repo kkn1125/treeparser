@@ -39,7 +39,7 @@ import {
     SAMPLE_EMPTY,
     SAMPLE_SCATTERED_HOLE,
     SAMPLE_SCATTERED_HOLE_RESULT
-} from "./sample.js";
+} from "../assets/src/script/sample.js";
 
 /**!
  * 테스트 명세
