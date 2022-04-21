@@ -15,7 +15,7 @@
 // 정규식 변수
 const EACH_TEXT = '';
 const LINE = /\n/;
-const BLANK = /[\s]/g;
+const BLANK = /\B[\s]/gm;
 
 export {
     EACH_TEXT,
