@@ -12,7 +12,7 @@
 
 "use strict";
 
-import { SAMPLE_ORDERED_NAME } from "../../../__test__/sample.js";
+import { SAMPLE_ORDERED_NAME } from "../../src/script/sample.js";
 import { getElement } from "./parts/constant.js";
 
 const Controller = function () {
