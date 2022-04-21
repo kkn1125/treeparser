@@ -6,7 +6,7 @@
  * @author   kimson <chaplet01@gmail.com>
  * @github   https://github.com/kkn1125
  * @written  2022-04-19 13:07:01
- * @modified 2022-04-19 21:26:59
+ * @modified 2022-04-21 11:32:29
  * @since    v0.1.0
  */
 
@@ -16,15 +16,29 @@
 
 "use strict";
 
-import { getElement } from "../assets/core/module/parts/constant.js";
+import {
+    getElement
+} from "../assets/core/module/parts/constant.js";
+import { isStrictSame } from "../assets/core/module/parts/filterTools.js";
+
 import {
     OptionalParser
 } from "../assets/core/parser.js";
 
 import {
+    FILETREE_SCATTERED_HOLE_HTML_RESULT,
+    OBJECT_ARRAY_HAS_BLANKS,
+    OBJECT_ARRAY_HAS_FIRST_BRANCH,
+    OBJECT_ARRAY_HAS_SECOND_BRANCH,
+    OBJECT_ARRAY_HAS_THIRD_BRANCH,
+    OBJECT_ARRAY_HAS_VERTICAL_BRANCH,
+    OBJECT_ARRAY_VERTICAL_BRANCH,
     SAMPLE_A,
+    SAMPLE_A_RESULT,
+    SAMPLE_BUG_AND_SCATTERED_HOLE,
     SAMPLE_EMPTY,
-    SAMPLE_SCATTERED_HOLE
+    SAMPLE_SCATTERED_HOLE,
+    SAMPLE_SCATTERED_HOLE_RESULT
 } from "./sample.js";
 
 /**!
@@ -32,7 +46,7 @@ import {
  * 1. separateLine      : 줄 단위 배열화
  * 2. filterWhitespace  : 빈 인덱스 제거
  * 3. parse             : 모든 파싱이 끝난 배열
- * 4. drawBranch        : 브랜치 그리기
+ * 4. renderTree        : 브랜치 그리기
  */
 
 const options = {};
@@ -89,16 +103,7 @@ describe("구동 테스트", () => {
         const trimedSources  = SAMPLE_SCATTERED_HOLE.trim();
         const convertedArray = parser.stringToArray(trimedSources);
 
-        expect(convertedArray).toStrictEqual([
-            "test",
-            " asd",
-            "  qwe",
-            "  gfhj",
-            "  ads",
-            "   fgd",
-            "  sdfg",
-            " cbv",
-        ]);
+        expect(convertedArray).toStrictEqual(SAMPLE_SCATTERED_HOLE_RESULT);
     });
 
     test("공백 수를 가진 객체 배열 출력 테스트", () => {
@@ -107,40 +112,7 @@ describe("구동 테스트", () => {
         const convertedArray = parser.stringToArray(trimedSources);
         const numberOfBlanks = parser.countIndences(convertedArray);
 
-        expect(numberOfBlanks).toStrictEqual([
-            {
-                directoryName: "test",
-                numberOfIndences: 0,
-            },
-            {
-                directoryName: "asd",
-                numberOfIndences: 1,
-            },
-            {
-                directoryName: "qwe",
-                numberOfIndences: 2,
-            },
-            {
-                directoryName: "gfhj",
-                numberOfIndences: 2,
-            },
-            {
-                directoryName: "ads",
-                numberOfIndences: 2,
-            },
-            {
-                directoryName: "fgd",
-                numberOfIndences: 3,
-            },
-            {
-                directoryName: "sdfg",
-                numberOfIndences: 2,
-            },
-            {
-                directoryName: "cbv",
-                numberOfIndences: 1,
-            },
-        ]);
+        expect(numberOfBlanks).toStrictEqual(OBJECT_ARRAY_HAS_BLANKS);
     });
 
     test("객체 배열 세 번째 브랜치 판별 테스트", () => {
@@ -150,48 +122,7 @@ describe("구동 테스트", () => {
         const numberOfBlanks        = parser.countIndences(convertedArray);
         const addedFirstBranchArray = parser.addThirdBranch(numberOfBlanks);
 
-        expect(addedFirstBranchArray).toStrictEqual([
-            {
-                directoryName: "test",
-                numberOfIndences: 0,
-                third: "─",
-            },
-            {
-                directoryName: "asd",
-                numberOfIndences: 1,
-                third: "─",
-            },
-            {
-                directoryName: "qwe",
-                numberOfIndences: 2,
-                third: "─",
-            },
-            {
-                directoryName: "gfhj",
-                numberOfIndences: 2,
-                third: "─",
-            },
-            {
-                directoryName: "ads",
-                numberOfIndences: 2,
-                third: "─",
-            },
-            {
-                directoryName: "fgd",
-                numberOfIndences: 3,
-                third: "─",
-            },
-            {
-                directoryName: "sdfg",
-                numberOfIndences: 2,
-                third: "─",
-            },
-            {
-                directoryName: "cbv",
-                numberOfIndences: 1,
-                third: "─",
-            },
-        ]);
+        expect(addedFirstBranchArray).toStrictEqual(OBJECT_ARRAY_HAS_THIRD_BRANCH);
     });
 
     test("객체 배열 두 번째 브랜치 판별 테스트 - 자식 유무", () => {
@@ -202,56 +133,22 @@ describe("구동 테스트", () => {
         const addedFirstBranchArray  = parser.addThirdBranch(numberOfBlanks);
         const addedSecondBranchArray = parser.addSecondBranch(addedFirstBranchArray);
 
-        expect(addedSecondBranchArray).toStrictEqual([
-            {
-                directoryName: "test",
-                numberOfIndences: 0,
-                second: "┬",
-                third: "─",
-            },
-            {
-                directoryName: "asd",
-                numberOfIndences: 1,
-                second: "┬",
-                third: "─",
-            },
-            {
-                directoryName: "qwe",
-                numberOfIndences: 2,
-                second: "─",
-                third: "─",
-            },
-            {
-                directoryName: "gfhj",
-                numberOfIndences: 2,
-                second: "─",
-                third: "─",
-            },
-            {
-                directoryName: "ads",
-                numberOfIndences: 2,
-                second: "┬",
-                third: "─",
-            },
-            {
-                directoryName: "fgd",
-                numberOfIndences: 3,
-                second: "─",
-                third: "─",
-            },
-            {
-                directoryName: "sdfg",
-                numberOfIndences: 2,
-                second: "─",
-                third: "─",
-            },
-            {
-                directoryName: "cbv",
-                numberOfIndences: 1,
-                second: "─",
-                third: "─",
-            },
-        ]);
+        expect(addedSecondBranchArray).toStrictEqual(OBJECT_ARRAY_HAS_SECOND_BRANCH);
+    });
+
+    test("strict same 테스트", () => {
+        expect(isStrictSame({
+            name: "kimson"
+        }, {
+            name: "kimson"
+        })).toBeTruthy();
+
+        expect(isStrictSame({
+            name: "kimson",
+            number: ""
+        }, {
+            name: "kimson"
+        })).toBeFalsy();
     });
 
     test("객체 배열 첫 번째 브랜치 판별 테스트 - 형제 유무", () => {
@@ -259,116 +156,58 @@ describe("구동 테스트", () => {
         const trimedSources  = SAMPLE_SCATTERED_HOLE.trim();
         const convertedArray = parser.parse(trimedSources).getParsedLines();
 
-        expect(convertedArray).toStrictEqual([
-            {
-                directoryName: "test",
-                numberOfIndences: 0,
-                first: "└",
-                second: "┬",
-                third: "─",
-                vertical: [],
-            },
-            {
-                directoryName: "asd",
-                numberOfIndences: 1,
-                first: "├",
-                second: "┬",
-                third: "─",
-                vertical: [],
-            },
-            {
-                directoryName: "qwe",
-                numberOfIndences: 2,
-                first: "├",
-                second: "─",
-                third: "─",
-                vertical: [1],
-            },
-            {
-                directoryName: "gfhj",
-                numberOfIndences: 2,
-                first: "├",
-                second: "─",
-                third: "─",
-                vertical: [1],
-            },
-            {
-                directoryName: "ads",
-                numberOfIndences: 2,
-                first: "├",
-                second: "┬",
-                third: "─",
-                vertical: [1],
-            },
-            {
-                directoryName: "fgd",
-                numberOfIndences: 3,
-                first: "└",
-                second: "─",
-                third: "─",
-                vertical: [1,2],
-            },
-            {
-                directoryName: "sdfg",
-                numberOfIndences: 2,
-                first: "└",
-                second: "─",
-                third: "─",
-                vertical: [1],
-            },
-            {
-                directoryName: "cbv",
-                numberOfIndences: 1,
-                first: "└",
-                second: "─",
-                third: "─",
-                vertical: [],
-            },
-        ]);
+        expect(convertedArray).toStrictEqual(OBJECT_ARRAY_HAS_FIRST_BRANCH);
     });
 
-    describe("파일 트리 출력 테스트", () => {;
+    test("객체 배열 수직 브랜치 판별 테스트 - 형제 유무", () => {
+        const parser         = new TreeParser();
+        const trimedSources  = SAMPLE_BUG_AND_SCATTERED_HOLE.trim();
+        const convertedArray = parser.parse(trimedSources).getParsedLines();
+
+        expect(convertedArray).toStrictEqual(OBJECT_ARRAY_VERTICAL_BRANCH);
+    });
+
+    /**
+     * @since v0.2.0
+     */
+    test("파일 트리 출력 테스트", () => {
+        ;
         const parser         = new TreeParser();
         const trimedSources  = SAMPLE_SCATTERED_HOLE.trim();
         const convertedArray = parser.parse(trimedSources);
-        const app = document.createElement("div");
-        app.id = "#app";
 
-        expect(parser.renderTree()).toStrictEqual(`<div class="parsed-data">
-        └┬─test
-    </div><div class="parsed-data">
-        　├┬─asd
-    </div><div class="parsed-data">
-        　│├──qwe
-    </div><div class="parsed-data">
-        　│├──gfhj
-    </div><div class="parsed-data">
-        　│├┬─ads
-    </div><div class="parsed-data">
-        　││└──fgd
-    </div><div class="parsed-data">
-        　│└──sdfg
-    </div><div class="parsed-data">
-        　└──cbv
-    </div>`);
+        const app = document.createElement("div");
+        app.id    = "#app";
+
+        expect(parser.renderTree()).toStrictEqual(FILETREE_SCATTERED_HOLE_HTML_RESULT);
 
         expect(parser.renderTree(app)).toBeUndefined();
-        expect(app.innerHTML).toStrictEqual(`<div class="parsed-data">
-        └┬─test
-    </div><div class="parsed-data">
-        　├┬─asd
-    </div><div class="parsed-data">
-        　│├──qwe
-    </div><div class="parsed-data">
-        　│├──gfhj
-    </div><div class="parsed-data">
-        　│├┬─ads
-    </div><div class="parsed-data">
-        　││└──fgd
-    </div><div class="parsed-data">
-        　│└──sdfg
-    </div><div class="parsed-data">
-        　└──cbv
-    </div>`);
+        expect(app.innerHTML).toStrictEqual(FILETREE_SCATTERED_HOLE_HTML_RESULT);
+    });
+
+    /**
+     * @since v0.2.0
+     */
+    test("자식 출력 테스트", () => {
+        const parser = new TreeParser();
+        parser.parse(SAMPLE_A);
+
+        const app = document.createElement("div");
+        app.id    = "#app";
+
+        expect(parser.renderTree()).toStrictEqual(SAMPLE_A_RESULT);
+    });
+
+    /**
+     * @since v0.2.0
+     */
+    test("버그 혼합 샘플 테스트", () => {
+        const parser = new TreeParser();
+        parser.parse(SAMPLE_BUG_AND_SCATTERED_HOLE);
+
+        const app = document.createElement("div");
+        app.id    = "#app";
+
+        expect(parser.getParsedLines()).toStrictEqual(OBJECT_ARRAY_VERTICAL_BRANCH);
     });
 });

@@ -6,14 +6,20 @@
  * @author   kimson <chaplet01@gmail.com>
  * @github   https://github.com/kkn1125
  * @written  2022-04-19 13:07:01
- * @modified 2022-04-19 21:26:59
+ * @modified 2022-04-21 11:32:29
  * @since    v0.1.0
  */
 
 "use strict";
 
-// import { SAMPLE_BUG, SAMPLE_SCATTERED_HOLE } from '../../../__test__/sample.js';
-import { getElement } from '../../core/module/parts/constant.js';
+import {
+    SAMPLE_ORDERED_NAME
+} from '../../../__test__/sample.js';
+
+import {
+    getElement
+} from '../../core/module/parts/constant.js';
+
 import {
     OptionalParser
 } from '../../core/parser.js';
@@ -24,6 +30,6 @@ const options = {
 
 const TreeParser    = OptionalParser.init(options);
 const parser        = new TreeParser();
-// const trimedSources = SAMPLE_BUG.trim();
+const trimedSources = SAMPLE_ORDERED_NAME.trim();
 
-// const a = parser.parse(trimedSources).renderTree(getElement(options.app));
+const a = parser.parse(trimedSources).renderTree(getElement(options.app));

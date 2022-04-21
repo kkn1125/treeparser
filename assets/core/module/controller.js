@@ -6,12 +6,13 @@
  * @author   kimson <chaplet01@gmail.com>
  * @github   https://github.com/kkn1125
  * @written  2022-04-19 13:07:01
- * @modified 2022-04-19 21:26:59
+ * @modified 2022-04-21 11:32:29
  * @since    v0.1.0
  */
 
 "use strict";
 
+import { SAMPLE_ORDERED_NAME } from "../../../__test__/sample.js";
 import { getElement } from "./parts/constant.js";
 
 const Controller = function () {
@@ -21,8 +22,13 @@ const Controller = function () {
         window.addEventListener("keyup", this.handleInput);
     }
 
+    // istanbul ignore next
     this.handleInput = function (e) {
-        models.renderParsedTree(getElement('#inputs').value, getElement("#app"));
+        const target = e.target;
+        
+        if(target.id !== "inputs") return;
+
+        models.renderParsedTree(getElement('#inputs').value || SAMPLE_ORDERED_NAME, getElement("#app"));
     }
 }
 

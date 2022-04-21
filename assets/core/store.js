@@ -13,17 +13,14 @@
 
 const isBase = function () {return [...arguments].some(compare=>location.hostname == compare)};
 
-/* istanbul ignore next */
 console.test = function (...args) {
     if(isBase('127.0.0.1', 'localhost')) console.warn(...args);
 }
 
-/* istanbul ignore next */
 console.mark = function (...args) {
     if(isBase('127.0.0.1', 'localhost')) console.debug(...args);
 }
 
-/* istanbul ignore next */
 const manageHandler = {
     apply (target, thisArg, args) {
         const [key, value] = args;
@@ -51,7 +48,6 @@ const manageHandler = {
     }
 };
 
-/* istanbul ignore next */
 const storeHandler = {
     set (obj, prop, val) {
         if(obj['valid']) {
