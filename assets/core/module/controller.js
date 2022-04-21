@@ -20,6 +20,11 @@ const Controller = function () {
     this.init = function (model) {
         models = model;
         window.addEventListener("keyup", this.handleInput);
+        
+        // 샘플 텍스트
+        setTimeout(() => {
+            models.renderParsedTree(SAMPLE_ORDERED_NAME, getElement("#app"));
+        }, 10);
     }
 
     // istanbul ignore next

@@ -13,14 +13,6 @@
 "use strict";
 
 import {
-    SAMPLE_ORDERED_NAME
-} from '../../../__test__/sample.js';
-
-import {
-    getElement
-} from '../../core/module/parts/constant.js';
-
-import {
     OptionalParser
 } from '../../core/parser.js';
 
@@ -30,6 +22,6 @@ const options = {
 
 const TreeParser    = OptionalParser.init(options);
 const parser        = new TreeParser();
-const trimedSources = SAMPLE_ORDERED_NAME.trim();
+// const trimedSources = SAMPLE_ORDERED_NAME.trim();
 
-const a = parser.parse(trimedSources).renderTree(getElement(options.app));
+// const a = parser.parse(trimedSources).renderTree(getElement(options.app));
