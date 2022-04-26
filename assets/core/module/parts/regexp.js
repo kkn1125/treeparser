@@ -3,11 +3,12 @@
  * 
  * 파일 트리 파싱 : 정규식
  * 
- * @author   kimson <chaplet01@gmail.com>
- * @github   https://github.com/kkn1125
- * @written  2022-04-19 13:07:01
- * @modified 2022-04-19 21:26:59
- * @since    v0.1.0
+ * @author    kimson <chaplet01@gmail.com>
+ * @github    https://github.com/kkn1125
+ * @written   2022-04-19 13:07:01
+ * @modified  2022-04-19 21:26:59
+ * @since     v0.1.0
+ * @currently v0.2.1
  */
 
 "use strict";
