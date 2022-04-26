@@ -3,15 +3,17 @@
  * 
  * 파일 트리 파싱 : 배열 필터에 사용되는 predicate 함수
  * 
- * @author   kimson <chaplet01@gmail.com>
- * @github   https://github.com/kkn1125
- * @written  2022-04-19 13:07:01
- * @modified 2022-04-21 11:32:29
- * @since    v0.1.0
+ * @author    kimson <chaplet01@gmail.com>
+ * @github    https://github.com/kkn1125
+ * @written   2022-04-19 13:07:01
+ * @modified  2022-04-26 23:24:32
+ * @since     v0.1.0
+ * @currently v0.2.1
  */
 
 "use strict";
 
+import { store } from "../../store.js";
 import {
     BRANCH_FIRST_BROTHER,
     BRANCH_FIRST_ONLY,
@@ -33,6 +35,35 @@ import {
  * @since  v0.2.0
  */
 let stack = [];
+
+/**
+ * 비교 대상 객체의 내용을 덮어쓰기
+ * @param {Object} target 
+ * @param {Object} compare 
+ * @returns {Object}
+ * @since v0.2.1
+ */
+function isDeepCopy(target, compare) {
+    let temp = target;
+    for(let key in compare) {
+        if(!(compare[key] instanceof Array) && compare[key] instanceof Object && typeof compare[key] === 'object') {
+            if(!temp[key]) temp[key] = {};
+            temp[key] = isDeepCopy(temp[key], compare[key]);
+        } else {
+            if(compare[key] instanceof Array) {
+                if(compare[key].filter(i=>i).length>0) {
+                    temp[key] = [...compare[key]];
+                }
+            } else {
+                if (compare[key]){
+                    temp[key] = compare[key];
+                }
+            }
+        }
+    }
+
+    return temp;
+}
 
 // istanbul ignore next
 /**
@@ -62,7 +93,7 @@ function countMatchedIndencesOrZero(line) {
 function setThirdBranch(line) {
     return {
         ...line,
-        third: BRANCH_THIRD_ONLY
+        third: store?.branches?.third || BRANCH_THIRD_ONLY
     }
 }
 
@@ -74,14 +105,14 @@ function setThirdBranch(line) {
  * @returns {Object}
  */
 function setSecondBranch(line, idx, origin) {
-    let branch = BRANCH_SECOND_ONLY;
+    let branch = store?.branches?.second?.only || BRANCH_SECOND_ONLY;
 
     if (idx < origin.length - 1) {
         const now = origin[idx].numberOfIndences;
         const next = origin[idx + 1].numberOfIndences;
 
         if (now < next) {
-            branch = BRANCH_SECOND_CHILD;
+            branch = store?.branches?.second?.child || BRANCH_SECOND_CHILD;
         }
     }
 
@@ -98,7 +129,7 @@ function setSecondBranch(line, idx, origin) {
  */
 function setFirstBranch(line, lineid, origin) {
     let finder;
-
+    
     /**
      * 자식이 없으면 first branch only
      * 형제가 있어도 내려갈때 막히면 first branch only
@@ -124,12 +155,12 @@ function setFirstBranch(line, lineid, origin) {
             delete stack[line.numberOfIndences];
             return {
                 ...line,
-                first: BRANCH_FIRST_ONLY
+                first: store?.branches?.first?.only || BRANCH_FIRST_ONLY
             }
         } else if(line.numberOfIndences === finder.numberOfIndences) {
             return {
                 ...line,
-                first: BRANCH_FIRST_BROTHER
+                first: store?.branches?.first?.brother || BRANCH_FIRST_BROTHER
             }
         }
     }
@@ -138,7 +169,7 @@ function setFirstBranch(line, lineid, origin) {
 
     return {
         ...line,
-        first: BRANCH_FIRST_ONLY,
+        first: store?.branches?.first?.only || BRANCH_FIRST_ONLY,
         vertical: [],
     }
 }
@@ -153,9 +184,10 @@ function setFirstBranch(line, lineid, origin) {
  * @see      treeFormatter
  */
 function changeBrotherToVertical(vertical, blank, idx) {
+    
     vertical.forEach(number => {
         if(idx === number) {
-            blank = BRANCH_VERTICAL_ONLY;
+            blank = store?.branches?.vertical || BRANCH_VERTICAL_ONLY;
         }
     });
 
@@ -182,7 +214,7 @@ function treeFormatter(line) {
     const whitespaceWithVertical = whitespace.split(EACH_TEXT).map(changeBrotherToVertical.bind(this, vertical)).join('');
 
     return `<div class="parsed-data">
-        ${whitespaceWithVertical}${first}${second}${third}${directoryName}
+        ${whitespaceWithVertical}${first}${second}${third}${'&nbsp;'.repeat(store?.style?.offset || 0)}${directoryName.badge(store?.style?.directory || '')}
     </div>`;
 }
 
@@ -193,4 +225,5 @@ export {
     setFirstBranch,
     countMatchedIndencesOrZero,
     treeFormatter,
+    isDeepCopy,
 }

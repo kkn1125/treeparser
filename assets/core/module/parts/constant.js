@@ -3,11 +3,12 @@
  * 
  * 파일 트리 파싱 : 브랜치 모양
  * 
- * @author   kimson <chaplet01@gmail.com>
- * @github   https://github.com/kkn1125
- * @written  2022-04-19 13:07:01
- * @modified 2022-04-21 11:32:29
- * @since    v0.1.0
+ * @author    kimson <chaplet01@gmail.com>
+ * @github    https://github.com/kkn1125
+ * @written   2022-04-19 13:07:01
+ * @modified  2022-04-26 23:24:16
+ * @since     v0.1.0
+ * @currently v0.2.1
  */
 
 "use strict";
@@ -32,6 +33,11 @@ const BRANCH_THIRD_ONLY    = "─";
  */
 const getElement = function (name) {
     return document.querySelector(name);
+}
+
+String.prototype.badge = function (classNames) {
+    if(!(classNames instanceof Array)) return this;
+    return `<span class="${classNames.join(' ')}">${this}</span>`;
 }
 
 export {

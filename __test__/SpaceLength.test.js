@@ -6,7 +6,7 @@
  * @author   kimson <chaplet01@gmail.com>
  * @github   https://github.com/kkn1125
  * @written  2022-04-19 13:07:01
- * @modified 2022-04-21 11:32:29
+ * @modified 2022-04-26 23:24:25
  * @since    v0.1.0
  */
 
@@ -19,7 +19,7 @@
 import {
     getElement
 } from "../assets/core/module/parts/constant.js";
-import { isStrictSame } from "../assets/core/module/parts/filterTools.js";
+import { isDeepCopy } from "../assets/core/module/parts/filterTools.js";
 
 import {
     OptionalParser
@@ -136,19 +136,33 @@ describe("구동 테스트", () => {
         expect(addedSecondBranchArray).toStrictEqual(OBJECT_ARRAY_HAS_SECOND_BRANCH);
     });
 
-    test("strict same 테스트", () => {
-        expect(isStrictSame({
+    /**
+     * @since v0.2.1
+     */
+    test("deep copy 테스트", () => {
+        expect(isDeepCopy({
             name: "kimson"
         }, {
-            name: "kimson"
-        })).toBeTruthy();
+            name: "toto"
+        })).toStrictEqual({
+            name: "toto"
+        });
 
-        expect(isStrictSame({
+        expect(isDeepCopy({
             name: "kimson",
-            number: ""
         }, {
-            name: "kimson"
-        })).toBeFalsy();
+            name: "toto",
+            coco: {
+                alal: 123,
+                arr: [1,2,3]
+            }
+        })).toStrictEqual({
+            name: "toto",
+            coco: {
+                alal: 123,
+                arr: [1,2,3]
+            }
+        });
     });
 
     test("객체 배열 첫 번째 브랜치 판별 테스트 - 형제 유무", () => {

@@ -8,9 +8,10 @@
  * @written    2022-04-19 13:07:01
  * @modified   2022-04-21 11:32:29
  * @since      v0.1.0
+ * @currently  v0.2.1
  * @references code convention
- *             ├─ (https://dkje.github.io/2020/08/03/CleanCodeSeries2-copy)
- *             └─ (https://itmining.tistory.com/72)
+ *  - https://dkje.github.io/2020/08/03/CleanCodeSeries2-copy
+ *  - https://itmining.tistory.com/72
  */
 
 "use strict";
@@ -37,10 +38,10 @@ const Model = function () {
         views = view;
     }
 
+    // istanbul ignore next
     /** ================================ */
     /**            메인 메서드            */
     /** ================================ */
-    // istanbul ignore next
     this.renderParsedTree = function (contents, app) {
         this.parse(contents);
         this.renderTree(app);
@@ -72,7 +73,6 @@ const Model = function () {
     // istanbul ignore next
     /**
      * 원문 파싱 후 브랜치를 그림
-     * 
      * @param {string} source 
      * @returns {string[]}
      */

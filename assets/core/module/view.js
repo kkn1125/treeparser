@@ -3,15 +3,17 @@
  * 
  * 파일 트리 파싱 : 변환된 파일트리 출력 제어
  * 
- * @author   kimson <chaplet01@gmail.com>
- * @github   https://github.com/kkn1125
- * @written  2022-04-19 13:07:01
- * @modified 2022-04-21 11:32:29
- * @since    v0.1.0
+ * @author    kimson <chaplet01@gmail.com>
+ * @github    https://github.com/kkn1125
+ * @written   2022-04-19 13:07:01
+ * @modified  2022-04-26 23:24:51
+ * @since     v0.1.0
+ * @currently v0.2.1
  */
 
 "use strict";
 
+import { store } from "../store.js";
 import {
     getElement
 } from "./parts/constant.js";
@@ -25,7 +27,7 @@ const View = function () {
 
     this.init = function (option) {
         options = option;
-
+        
         app = getElement(options.app);
     }
 
