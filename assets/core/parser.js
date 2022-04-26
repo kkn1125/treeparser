@@ -3,11 +3,12 @@
  * 
  * 파일 트리 파싱 : 코어 자바스크립트
  * 
- * @author   kimson <chaplet01@gmail.com>
- * @github   https://github.com/kkn1125
- * @written  2022-04-19 13:07:01
- * @modified 2022-04-21 11:32:29
- * @since    v0.1.0
+ * @author    kimson <chaplet01@gmail.com>
+ * @github    https://github.com/kkn1125
+ * @written   2022-04-19 13:07:01
+ * @modified  2022-04-26 23:24:58
+ * @since     v0.1.0
+ * @currently v0.2.1
  */
 
 "use strict";

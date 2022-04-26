@@ -8,7 +8,7 @@ indence value로 File Tree를 실시간으로 생성.
 
 ## 버전
 
-v0.1.0
+v0.2.1
 
 ## 라이선스
 
@@ -27,14 +27,14 @@ v0.1.0
 5. 순차적 파싱
 6. 파일트리 파싱 단계 객체 얻기
 7. 파싱된 객체 원하는 엘리먼트에 출력
+8. 브랜치 모양 커스터마이징
 
 ### 개선 사항
 
-- 들여쓰기 값 커스터마이징 문제
-- 브랜치 모양 커스터마이징 문제
-- TreeParser를 API로 사용하는 문제
-- child만 있을 때 수직 선 생기는 버그 문제
+- [ ] 들여쓰기 값 커스터마이징 문제
+- [ ] TreeParser를 API로 사용하는 문제
+- [x] child만 있을 때 수직 선 생기는 버그 문제
 
 ## coverage 90%이상
 
-![image](https://user-images.githubusercontent.com/71887242/164009348-815ae137-9656-4610-a9d1-b51d46804efc.png)
+![image](https://user-images.githubusercontent.com/71887242/165322944-524043b2-fb52-4d57-b40c-76c62c9ce5a4.png)

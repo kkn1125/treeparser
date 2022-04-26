@@ -3,11 +3,12 @@
  * 
  * 파일 트리 파싱 : 데모 페이지 이벤트 제어
  * 
- * @author   kimson <chaplet01@gmail.com>
- * @github   https://github.com/kkn1125
- * @written  2022-04-19 13:07:01
- * @modified 2022-04-21 11:32:29
- * @since    v0.1.0
+ * @author    kimson <chaplet01@gmail.com>
+ * @github    https://github.com/kkn1125
+ * @written   2022-04-19 13:07:01
+ * @modified  2022-04-21 11:32:29
+ * @since     v0.1.0
+ * @currently v0.2.1
  */
 
 "use strict";
