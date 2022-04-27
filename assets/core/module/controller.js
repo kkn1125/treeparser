@@ -35,6 +35,7 @@ const Controller = function () {
 
         if(isBase(...LOCALS, DEMO)) {
             window.addEventListener("keyup", this.handleInput);
+            window.addEventListener("click", this.clipboardCopy);
             
             // 샘플 텍스트
             setTimeout(() => {
@@ -44,12 +45,30 @@ const Controller = function () {
     }
 
     // istanbul ignore next
+    this.clipboardCopy = function (e) {
+        const target = e.target;
+        
+        if(target.id !== "copy") return;
+        getElement("#copy").innerHTML += "✅";
+
+        setTimeout(() => {
+            getElement("#copy").innerHTML = "Copy";
+        }, 3000);
+
+        navigator.clipboard.writeText(getElement("#app").outerHTML).then(function() {
+            console.log("Async: Copying to clipboard was successful!");
+        }, function(err) {
+            console.error("Async: Could not copy text: ", err);
+        });
+    }
+
+    // istanbul ignore next
     this.handleInput = function (e) {
         const target = e.target;
         
         if(target.id !== "inputs") return;
 
-        models.renderParsedTree(getElement('#inputs').value || SAMPLE_ORDERED_NAME, getElement("#app"));
+        models.renderParsedTree(getElement("#inputs").value || SAMPLE_ORDERED_NAME, getElement("#app"));
     }
 }
 
