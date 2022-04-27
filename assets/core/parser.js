@@ -8,7 +8,7 @@
  * @written   2022-04-19 13:07:01
  * @modified  2022-04-26 23:24:58
  * @since     v0.1.0
- * @currently v0.2.1
+ * @currently v0.2.2
  */
 
 "use strict";
