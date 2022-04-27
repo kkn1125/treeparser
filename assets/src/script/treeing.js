@@ -8,45 +8,38 @@
  * @written   2022-04-19 13:07:01
  * @modified  2022-04-26 23:24:10
  * @since     v0.1.0
- * @currently v0.2.1
+ * @currently v0.2.2
  */
 
 "use strict";
 
-import { isDeepCopy } from '../../core/module/parts/filterTools.js';
 import {
     OptionalParser
-} from '../../core/parser.js';
+} from "../../core/parser.js";
 
-import {
-    store
-} from '../../core/store.js';
-
+/**
+ * @since v0.2.2
+ */
 const options = {
-    app: '#app',
+    app: "#app",
     branches: {
         first: {
-            only: '└',
-            brother: '├',
+            only: "└",
+            brother: "├",
         },
         second: {
-            only: '─',
-            child: '┬',
+            only: "─",
+            child: "┬",
         },
-        third: '─',
-        vertical: '│',
+        third: "─",
+        vertical: "│",
     },
     style: {
-        directory: ['badge', 'bg-info'],
-        offset: 0 // default : 0
-    }
+        directory: ["badge", "bg-info"],
+        offset: 1
+    },
+    indent: 1
 };
-
-store.manager('branches', isDeepCopy({}, options.branches));
-store.manager('style', isDeepCopy({}, options.style));
 
 const TreeParser    = OptionalParser.init(options);
 const parser        = new TreeParser();
-// const trimedSources = SAMPLE_ORDERED_NAME.trim();
-
-// const a = parser.parse(trimedSources).renderTree(getElement(options.app));

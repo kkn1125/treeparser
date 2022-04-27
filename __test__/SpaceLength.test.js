@@ -3,11 +3,12 @@
  * 
  * 파일 트리 파싱 : 테스트
  * 
- * @author   kimson <chaplet01@gmail.com>
- * @github   https://github.com/kkn1125
- * @written  2022-04-19 13:07:01
- * @modified 2022-04-26 23:24:25
- * @since    v0.1.0
+ * @author    kimson <chaplet01@gmail.com>
+ * @github    https://github.com/kkn1125
+ * @written   2022-04-19 13:07:01
+ * @modified  2022-04-27 13:39:09
+ * @since     v0.1.0
+ * @currently v0.2.2
  */
 
 /**
@@ -19,7 +20,7 @@
 import {
     getElement
 } from "../assets/core/module/parts/constant.js";
-import { isDeepCopy } from "../assets/core/module/parts/filterTools.js";
+import { deepCopy } from "../assets/core/module/parts/filterTools.js";
 
 import {
     OptionalParser
@@ -140,7 +141,7 @@ describe("구동 테스트", () => {
      * @since v0.2.1
      */
     test("deep copy 테스트", () => {
-        expect(isDeepCopy({
+        expect(deepCopy({
             name: "kimson"
         }, {
             name: "toto"
@@ -148,7 +149,7 @@ describe("구동 테스트", () => {
             name: "toto"
         });
 
-        expect(isDeepCopy({
+        expect(deepCopy({
             name: "kimson",
         }, {
             name: "toto",

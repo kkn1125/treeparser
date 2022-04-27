@@ -6,32 +6,88 @@
  * @author    kimson <chaplet01@gmail.com>
  * @github    https://github.com/kkn1125
  * @written   2022-04-19 13:07:01
- * @modified  2022-04-26 23:24:51
+ * @modified  2022-04-27 12:29:20
  * @since     v0.1.0
- * @currently v0.2.1
+ * @currently v0.2.2
  */
 
 "use strict";
 
-import { store } from "../store.js";
+import {
+    store
+} from "../store.js";
+
 import {
     getElement
 } from "./parts/constant.js";
 
 import {
+    deepCopy,
     treeFormatter
 } from "./parts/filterTools.js";
+
+const initialOption = {
+    app: "#app",
+    branches: {
+        first: {
+            only: "└",
+            brother: "├",
+        },
+        second: {
+            only: "─",
+            child: "┬",
+        },
+        third: "─",
+        vertical: "│",
+    },
+    style: {
+        directory: "",
+        offset: 0 // default : 0
+    },
+    indent: 1,
+}
 
 const View = function () {
     let options, app;
 
-    this.init = function (option) {
-        options = option;
-        
-        app = getElement(options.app);
+    /**
+     * 상태관리 store에 옵션을 복사 및 초기화
+     * @function initialOptions
+     * @since v0.2.2
+     */
+    this.initialOptions = function (options) {
+        const copy = deepCopy(initialOption, options);
+
+        store.manager("app", copy.app || "#app")
+        store.manager("branches", copy.branches);
+        store.manager("style", copy.style);
+        store.manager("indent", copy.indent);
     }
 
-    this.renderTree = function (convertedArray, app) {
+    /**
+     * view 초기화 설정
+     * @function init
+     * @param {Object} option 
+     */
+    this.init = function (option) {
+        options = option;
+
+        this.initialOptions(options);
+
+        /**
+         * default 값 지정
+         * 2022-04-27 10:28:34
+         */ 
+        app = getElement(store.app);
+    }
+
+    /**
+     * 파싱 데이터를 html 태그로 반환
+     * @function renderTree
+     * @param {Object[]} convertedArray 
+     * @returns {string}
+     */
+    this.renderTree = function (convertedArray) {
         const result = convertedArray.map(treeFormatter).join("");
         
         if(app) {

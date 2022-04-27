@@ -8,7 +8,7 @@
  * @written    2022-04-19 13:07:01
  * @modified   2022-04-21 11:32:29
  * @since      v0.1.0
- * @currently  v0.2.1
+ * @currently  v0.2.2
  * @references code convention
  *  - https://dkje.github.io/2020/08/03/CleanCodeSeries2-copy
  *  - https://itmining.tistory.com/72
@@ -42,9 +42,9 @@ const Model = function () {
     /** ================================ */
     /**            메인 메서드            */
     /** ================================ */
-    this.renderParsedTree = function (contents, app) {
+    this.renderParsedTree = function (contents) {
         this.parse(contents);
-        this.renderTree(app);
+        this.renderTree();
     }
 
     /**
@@ -64,10 +64,9 @@ const Model = function () {
      * 3. 세 번째 브랜치 기호 : 파일이 존재할 때 (항상 동일)
      * 
      * @function renderTree
-     * @param {string} app
      */
-     this.renderTree = function (app) {
-        return views.renderTree(parsedLines, app);
+     this.renderTree = function () {
+        return views.renderTree(parsedLines);
     }
 
     // istanbul ignore next
