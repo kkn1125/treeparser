@@ -6,14 +6,17 @@
  * @author    kimson <chaplet01@gmail.com>
  * @github    https://github.com/kkn1125
  * @written   2022-04-19 13:07:01
- * @modified  2022-04-26 23:24:32
+ * @modified  2022-04-27 10:20:11
  * @since     v0.1.0
- * @currently v0.2.1
+ * @currently v0.2.2
  */
 
 "use strict";
 
-import { store } from "../../store.js";
+import {
+    store
+} from "../../store.js";
+
 import {
     BRANCH_FIRST_BROTHER,
     BRANCH_FIRST_ONLY,
@@ -43,25 +46,25 @@ let stack = [];
  * @returns {Object}
  * @since v0.2.1
  */
-function isDeepCopy(target, compare) {
+function deepCopy(target, compare) {
     let temp = target;
     for(let key in compare) {
         if(!(compare[key] instanceof Array) && compare[key] instanceof Object && typeof compare[key] === 'object') {
             if(!temp[key]) temp[key] = {};
-            temp[key] = isDeepCopy(temp[key], compare[key]);
+            temp[key] = deepCopy(temp[key], compare[key] || {});
         } else {
             if(compare[key] instanceof Array) {
                 if(compare[key].filter(i=>i).length>0) {
                     temp[key] = [...compare[key]];
                 }
             } else {
-                if (compare[key]){
+                if (compare[key]!=undefined && compare[key]!=null&&compare[key]!=''){
                     temp[key] = compare[key];
                 }
             }
         }
     }
-
+    
     return temp;
 }
 
@@ -79,10 +82,14 @@ function isEmpty(line) {
  * 문자열의 공백 개수 산출, 없으면 0 반환
  * @param   {string} line 
  * @returns {int}
+ * @since v0.1.0
+ * @since v0.2.2
  */
 function countMatchedIndencesOrZero(line) {
     const matcher = line.match(BLANK);
-    return (line.length > 0) && matcher ? matcher.length : 0;
+    // if(line.length > 0 && matcher)
+    // console.log(store.indent)
+    return (line.length > 0) && matcher ? parseInt(matcher[0].length / (store.indent || 1)) : 0;
 }
 
 /**
@@ -225,5 +232,5 @@ export {
     setFirstBranch,
     countMatchedIndencesOrZero,
     treeFormatter,
-    isDeepCopy,
+    deepCopy,
 }

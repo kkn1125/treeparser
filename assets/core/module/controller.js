@@ -8,24 +8,39 @@
  * @written   2022-04-19 13:07:01
  * @modified  2022-04-21 11:32:29
  * @since     v0.1.0
- * @currently v0.2.1
+ * @currently v0.2.2
  */
 
 "use strict";
 
-import { SAMPLE_ORDERED_NAME } from "../../src/script/sample.js";
-import { getElement } from "./parts/constant.js";
+import {
+    SAMPLE_ORDERED_NAME
+} from "../../src/script/sample.js";
+
+import {
+    isBase
+} from "../store.js";
+
+import {
+    getElement
+} from "./parts/constant.js";
+
+const LOCALS = ["localhost", "127.0.0.1"];
+const DEMO = "https://kkn1125.github.io/treeparser/";
 
 const Controller = function () {
     let models;
     this.init = function (model) {
         models = model;
-        window.addEventListener("keyup", this.handleInput);
-        
-        // 샘플 텍스트
-        setTimeout(() => {
-            models.renderParsedTree(SAMPLE_ORDERED_NAME, getElement("#app"));
-        }, 10);
+
+        if(isBase(...LOCALS, DEMO)) {
+            window.addEventListener("keyup", this.handleInput);
+            
+            // 샘플 텍스트
+            setTimeout(() => {
+                models.renderParsedTree(SAMPLE_ORDERED_NAME);
+            }, 10);
+        }
     }
 
     // istanbul ignore next

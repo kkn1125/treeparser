@@ -1,1 +1,1 @@
-::selection{background-color:rgba(206,52,85,.3);color:#fff}.display-board{min-height:400px !important}
+html,body{height:100%}body{display:flex;flex-direction:column}main{flex:0 1 100%}::selection{background-color:rgba(206,52,85,.3);color:#fff}.display-board{min-height:400px !important}
