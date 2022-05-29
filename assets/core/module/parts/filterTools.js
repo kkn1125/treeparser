@@ -6,9 +6,9 @@
  * @author    kimson <chaplet01@gmail.com>
  * @github    https://github.com/kkn1125
  * @written   2022-04-19 13:07:01
- * @modified  2022-04-27 10:20:11
+ * @modified  2022-05-29 20:16:55
  * @since     v0.1.0
- * @currently v0.2.2
+ * @currently v0.2.3
  */
 
 "use strict";
@@ -220,7 +220,8 @@ function treeFormatter(line) {
     const whitespace = '　'.repeat(numberOfIndences);
     const whitespaceWithVertical = whitespace.split(EACH_TEXT).map(changeBrotherToVertical.bind(this, vertical)).join('');
 
-    return `<div class="parsed-data">
+    return `<div
+        class="parsed-data">
         ${whitespaceWithVertical}${first}${second}${third}${'&nbsp;'.repeat(store?.style?.offset || 0)}${directoryName.badge(store?.style?.directory || '')}
     </div>`;
 }

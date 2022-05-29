@@ -34,6 +34,9 @@ const BRANCH_THIRD_ONLY    = "─";
 const getElement = function (name) {
     return document.querySelector(name);
 }
+const getElementAll = function (name) {
+    return document.querySelectorAll(name);
+}
 
 String.prototype.badge = function (classNames) {
     if(!(classNames instanceof Array)) return this;
@@ -48,4 +51,5 @@ export {
     BRANCH_SECOND_CHILD,
     BRANCH_THIRD_ONLY,
     getElement,
+    getElementAll,
 }
