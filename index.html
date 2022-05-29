@@ -91,13 +91,29 @@
           <div class="col">
             <div>Name Offset</div>
             <div>
-              <input name="nameOffset" type="number" class="form-control" min="0" max="99" value="1" maxlength="2">
+              <input
+                name="nameOffset"
+                type="number"
+                class="form-control"
+                min="0"
+                max="99"
+                value="1"
+                maxlength="2"
+              />
             </div>
           </div>
           <div class="col">
             <div>Font Size</div>
             <div>
-              <input name="fontSize" type="number" class="form-control" min="12" max="30" value="16" maxlength="2">
+              <input
+                name="fontSize"
+                type="number"
+                class="form-control"
+                min="12"
+                max="30"
+                value="16"
+                maxlength="2"
+              />
             </div>
           </div>
         </div>
@@ -105,18 +121,26 @@
 
       <div class="container mt-5">
         <div class="d-flex justify-content-between" style="gap: 1rem">
-          <div class="col-6">
+          <div class="col">
             <div class="h3 fw-bold">✏ Just Indent Text</div>
-            <textarea id="inputs" class="form-control display-board" style="resize: none"></textarea>
+            <textarea
+              id="inputs"
+              class="form-control display-board"
+              style="resize: none"
+            ></textarea>
           </div>
-          <div class="col-6">
+          <div class="col">
             <div class="h3 fw-bold">😎 Parser</div>
             <div id="app" class="p-2 border rounded-3 display-board"></div>
           </div>
         </div>
       </div>
-      <div class="text-center my-3">
-        <button id="copy" class="w-50 btn btn-success">Copy</button>
+
+      <div class="container">
+        <div class="text-center my-3 d-flex justify-content-between" style="gap: 1rem">
+          <button id="textcopy" class="btn btn-success col" data-text="Only Text Copy">Only Text Copy</button>
+          <button id="wrapedcopy" class="btn btn-success col" data-text="Wrapped Element Copy">Wrapped Element Copy</button>
+        </div>
       </div>
     </main>
 

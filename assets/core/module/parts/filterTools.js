@@ -219,7 +219,8 @@ function treeFormatter(line) {
 
     const whitespace = '　'.repeat(numberOfIndences);
     const whitespaceWithVertical = whitespace.split(EACH_TEXT).map(changeBrotherToVertical.bind(this, vertical)).join('');
-
+    const isFolder = whitespaceWithVertical.match(/\/^/g)
+    console.log(isFolder)
     return `<div
         class="parsed-data">
         ${whitespaceWithVertical}${first}${second}${third}${'&nbsp;'.repeat(store?.style?.offset || 0)}${directoryName.badge(store?.style?.directory || '')}

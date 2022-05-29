@@ -42,23 +42,29 @@ const Controller = function () {
   };
 
   this.handleTypeChange = function (e) {
-    if(e.target.name !== 'decoration') return;
-    switch(e.target.value) {
-      case 'none': store.style.directory = []; break;
-      case 'box': store.style.directory = ["badge", "bg-info"]; break;
-      case 'bold': store.style.directory = ["fw-bold"]; break;
+    if (e.target.name !== "decoration") return;
+    switch (e.target.value) {
+      case "none":
+        store.style.directory = [];
+        break;
+      case "box":
+        store.style.directory = ["badge", "bg-info"];
+        break;
+      case "bold":
+        store.style.directory = ["fw-bold"];
+        break;
     }
     models.renderTree();
   };
 
   this.handleNameOffset = function (e) {
-    if(e.target.name !== 'nameOffset') return;
+    if (e.target.name !== "nameOffset") return;
     store.style.offset = parseInt(e.target.value);
     models.renderTree();
   };
 
   this.handleFontSize = function (e) {
-    if(e.target.name !== 'fontSize') return;
+    if (e.target.name !== "fontSize") return;
     store.style.fontSize = parseInt(e.target.value);
     models.renderTree();
   };
@@ -66,15 +72,15 @@ const Controller = function () {
   // istanbul ignore next
   this.clipboardCopy = function (e) {
     const target = e.target;
-
-    if (target.id !== "copy") return;
-    getElement("#copy").innerHTML += "✅";
+    if (target.id !== "textcopy" && target.id !== "wrapedcopy") return;
+    
+    target.innerHTML = "✅ Copied!";
 
     setTimeout(() => {
-      getElement("#copy").innerHTML = "Copy";
+      target.innerHTML = target.dataset.text;
     }, 3000);
 
-    navigator.clipboard.writeText(getElement("#app").outerHTML).then(
+    navigator.clipboard.writeText(target.id === 'textcopy'?getElement("#app").innerText:getElement("#app").outerHTML).then(
       function () {
         console.log("Async: Copying to clipboard was successful!");
       },
