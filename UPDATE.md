@@ -2,8 +2,15 @@
 
 > author   kimson
 > blog     https://kimson.github.io/
-> modified 2022-04-27 13:16:41
+> modified 2022-07-01 21:44:50
 
+- v0.2.4
+  - 수정:
+    - 파일트리 폰트 크기 변경 -> 14px
+    - manage 함수를 통한 store 관리
+  - 추가:
+    - 파일트리에서 디렉토리, 파일 분류에 따른 이모지 표시/제거 기능 추가
+    - 파일트리 권장 옵션 문구 추가
 - v0.2.2
   - 수정:
     - Demo site UI 수정
