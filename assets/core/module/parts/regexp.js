@@ -6,9 +6,9 @@
  * @author    kimson <chaplet01@gmail.com>
  * @github    https://github.com/kkn1125
  * @written   2022-04-19 13:07:01
- * @modified  2022-05-29 20:30:46
+ * @modified  2022-07-01 21:38:45
  * @since     v0.1.0
- * @currently v0.2.3
+ * @currently v0.2.4
  */
 
 "use strict";
