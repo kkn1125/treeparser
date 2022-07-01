@@ -6,9 +6,9 @@
  * @author    kimson <chaplet01@gmail.com>
  * @github    https://github.com/kkn1125
  * @written   2022-04-19 13:07:01
- * @modified  2022-05-29 20:16:55
+ * @modified  2022-07-01 21:38:45
  * @since     v0.1.0
- * @currently v0.2.3
+ * @currently v0.2.4
  */
 
 "use strict";
@@ -33,6 +33,10 @@ const initialOption = {
     third: "─",
     vertical: "│",
   },
+  emoji: { // 추가 @since v0.2.4
+    folder: "📂",
+    file: "📄",
+  },
   style: {
     directory: "",
     offset: 0, // default : 0
@@ -51,11 +55,11 @@ const View = function () {
    */
   this.initialOptions = function (options) {
     const copy = deepCopy(initialOption, options);
-
     store.manager("app", copy.app || "#app");
     store.manager("branches", copy.branches);
     store.manager("style", copy.style);
     store.manager("indent", copy.indent);
+    store.manager("emoji", copy.emoji); // 추가 @since v0.2.4
   };
 
   /**

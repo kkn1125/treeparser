@@ -6,9 +6,9 @@
  * @author    kimson <chaplet01@gmail.com>
  * @github    https://github.com/kkn1125
  * @written   2022-04-19 13:07:01
- * @modified  2022-05-29 20:16:55
+ * @modified  2022-07-01 21:38:45
  * @since     v0.1.0
- * @currently v0.2.3
+ * @currently v0.2.4
  */
 
 "use strict";
@@ -33,6 +33,7 @@ const Controller = function () {
       window.addEventListener("change", this.handleTypeChange);
       window.addEventListener("change", this.handleNameOffset);
       window.addEventListener("change", this.handleFontSize);
+      window.addEventListener("change", this.handleEmoji);
 
       // 샘플 텍스트
       setTimeout(() => {
@@ -57,6 +58,19 @@ const Controller = function () {
     models.renderTree();
   };
 
+  // 추가 @since v0.2.4
+  this.handleEmoji = function (e) {
+    if (e.target.name !== "emoji") return;
+
+    store.manager("emoji", {
+      folder: e.target.checked ? "📂" : "",
+      file: e.target.checked ? "📄" : "",
+    });
+
+    console.log(store.emoji);
+    models.renderTree();
+  };
+
   this.handleNameOffset = function (e) {
     if (e.target.name !== "nameOffset") return;
     store.style.offset = parseInt(e.target.value);
@@ -73,21 +87,27 @@ const Controller = function () {
   this.clipboardCopy = function (e) {
     const target = e.target;
     if (target.id !== "textcopy" && target.id !== "wrapedcopy") return;
-    
+
     target.innerHTML = "✅ Copied!";
 
     setTimeout(() => {
       target.innerHTML = target.dataset.text;
     }, 3000);
 
-    navigator.clipboard.writeText(target.id === 'textcopy'?getElement("#app").innerText:getElement("#app").outerHTML).then(
-      function () {
-        console.log("Async: Copying to clipboard was successful!");
-      },
-      function (err) {
-        console.error("Async: Could not copy text: ", err);
-      }
-    );
+    navigator.clipboard
+      .writeText(
+        target.id === "textcopy"
+          ? getElement("#app").innerText
+          : getElement("#app").outerHTML
+      )
+      .then(
+        function () {
+          console.log("Async: Copying to clipboard was successful!");
+        },
+        function (err) {
+          console.error("Async: Could not copy text: ", err);
+        }
+      );
   };
 
   // istanbul ignore next
