@@ -6,15 +6,13 @@
  * @author     kimson <chaplet01@gmail.com>
  * @github     https://github.com/kkn1125
  * @written    2022-04-19 13:07:01
- * @modified   2022-07-01 21:38:45
+ * @modified 2022-11-19 17:13:36
  * @since      v0.1.0
- * @currently  v0.2.4
+ * @currently  v0.3.0
  * @references code convention
  *  - https://dkje.github.io/2020/08/03/CleanCodeSeries2-copy
  *  - https://itmining.tistory.com/72
  */
-
-"use strict";
 
 import { LINE } from "./parts/regexp.js";
 
@@ -26,16 +24,17 @@ import {
   setFirstBranch,
 } from "./parts/filterTools.js";
 import { getElement } from "./parts/constant.js";
+import { View } from "./view.js";
 
 const wrap = document.createElement("div");
 
-const Model = function () {
-  let convertedLines, parsedLines, views;
+const Model = function (this: ModelEntity) {
+  let convertedLines: string[], parsedLines: CountIndences[], views: ViewEntity;
 
   /**
    * @function Model.init
    */
-  this.init = function (view) {
+  this.init = function (view: ViewEntity) {
     views = view;
   };
 
@@ -132,8 +131,8 @@ const Model = function () {
    */
   this.separateLine = function (trimSources) {
     const IS_NO_TEXT = !trimSources;
-    const IS_ZERO_FIELD = trimSources.length == 0;
-    const EMPTY_ARRAY = [];
+    const IS_ZERO_FIELD = trimSources.length === 0;
+    const EMPTY_ARRAY: never[] = [];
 
     if (IS_NO_TEXT || IS_ZERO_FIELD) return EMPTY_ARRAY;
 
@@ -156,7 +155,7 @@ const Model = function () {
    * @returns {Object}
    */
   this.countIndences = function (lines) {
-    function collectBlank(line, id) {
+    function collectBlank(line: string, id: number) {
       return {
         lineId: id,
         numberOfIndences: countMatchedIndencesOrZero(line),

@@ -7,9 +7,9 @@
  * @author    kimson <chaplet01@gmail.com>
  * @github    https://github.com/kkn1125
  * @written   2022-04-19 13:07:01
- * @modified  2022-07-01 21:38:45
+ * @modified 2022-11-19 17:13:36
  * @since     v0.1.0
- * @currently v0.2.4
+ * @currently v0.3.0
  */
 
 // istanbul ignore next
@@ -17,8 +17,8 @@
  * 개발, 프로덕션 구분
  * @returns {boolean}
  */
-const isBase = function () {
-  return [...arguments].some((compare) => !!location.href.match(compare));
+const isBase = function (...args: string[]) {
+  return [...args].some((compare: string) => !!location.href.match(compare));
 };
 
 // istanbul ignore next
@@ -31,12 +31,24 @@ console.mark = function (...args) {
   if (isBase("127.0.0.1", "localhost")) console.debug(...args);
 };
 
+type ManageHandlerThisArg = {
+  [key: string]: any;
+};
+
+type ManageHandlerArgs = {
+  [key: string]: any;
+}[];
+
 // istanbul ignore next
 /**
  * @since v0.2.1
  */
 const manageHandler = {
-  apply(target, thisArg, args) {
+  apply: function (
+    target: Function,
+    thisArg: ManageHandlerThisArg,
+    args: ManageHandlerArgs
+  ) {
     const [key, value] = args;
     if (typeof key != "string") {
       console.mark("[TypeError] key는 문자여야합니다!");
@@ -58,7 +70,8 @@ const manageHandler = {
         return (thisArg[key] = value);
       }
     }
-    Reflect.apply(target, thisArg, args);
+
+    return Reflect.apply(target, thisArg, args);
   },
 };
 
@@ -67,7 +80,7 @@ const manageHandler = {
  * @since v0.2.1
  */
 const storeHandler = {
-  set(obj, prop, val) {
+  set(obj: { [x: string]: any }, prop: string, val: any) {
     if (obj["valid"]) {
       obj[prop] = val;
       delete obj["valid"];
@@ -75,10 +88,10 @@ const storeHandler = {
 
     return true;
   },
-  get(obj, prop, proxy) {
+  get(obj: { [x: string]: any }, prop: string, proxy: any) {
     if (typeof obj[prop] == "function" && prop == "manager") {
       obj["valid"] = true;
-      return Reflect.get(...arguments);
+      return Reflect.get(obj, prop, proxy);
     } else if (!obj["valid"]) {
       return obj[prop];
     }

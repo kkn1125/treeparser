@@ -6,12 +6,10 @@
  * @author    kimson <chaplet01@gmail.com>
  * @github    https://github.com/kkn1125
  * @written   2022-04-19 13:07:01
- * @modified  2022-07-01 21:38:45
+ * @modified 2022-11-19 17:13:36
  * @since     v0.1.0
- * @currently v0.2.4
+ * @currently v0.3.0
  */
-
-"use strict";
 
 import { store } from "../store.js";
 
@@ -19,7 +17,7 @@ import { getElement } from "./parts/constant.js";
 
 import { deepCopy, treeFormatter } from "./parts/filterTools.js";
 
-const initialOption = {
+const initialOption: InitialOption = {
   app: "#app",
   branches: {
     first: {
@@ -33,7 +31,8 @@ const initialOption = {
     third: "─",
     vertical: "│",
   },
-  emoji: { // 추가 @since v0.2.4
+  emoji: {
+    // 추가 @since v0.3.0
     folder: "📂",
     file: "📄",
   },
@@ -45,21 +44,22 @@ const initialOption = {
   indent: 1,
 };
 
-const View = function () {
-  let options, app;
+const View = function View(this: ViewEntity) {
+  let options: InitialOption;
+  let app: Element | null;
 
   /**
    * 상태관리 store에 옵션을 복사 및 초기화
    * @function initialOptions
    * @since v0.2.2
    */
-  this.initialOptions = function (options) {
+  this.initialOptions = function (options: InitialOption) {
     const copy = deepCopy(initialOption, options);
     store.manager("app", copy.app || "#app");
     store.manager("branches", copy.branches);
     store.manager("style", copy.style);
     store.manager("indent", copy.indent);
-    store.manager("emoji", copy.emoji); // 추가 @since v0.2.4
+    store.manager("emoji", copy.emoji); // 추가 @since v0.3.0
   };
 
   /**
@@ -67,7 +67,7 @@ const View = function () {
    * @function init
    * @param {Object} option
    */
-  this.init = function (option) {
+  this.init = function (option: InitialOption) {
     options = option;
 
     this.initialOptions(options);
@@ -85,22 +85,30 @@ const View = function () {
    * @param {Object[]} convertedArray
    * @returns {string}
    */
-  this.renderTree = function (convertedArray) {
+  this.renderTree = function (convertedArray: CountIndences[]) {
     const result = convertedArray.map(treeFormatter).join("");
     const wrap = document.createElement("div");
-    wrap.style.opacity = 0.5;
+    wrap.style.opacity = "0.5";
 
     if (app) {
       setTimeout(() => {
         if (result.match(/this\sis\sa\ssample/gi)) {
           wrap.innerHTML = result;
-          app.innerHTML = wrap.outerHTML;
+          if (app) {
+            app.innerHTML = wrap.outerHTML;
+          }
         } else {
-          app.innerHTML = result;
+          if (app) {
+            app.innerHTML = result;
+          }
         }
-        [...app.children].forEach(
-          (item) => (item.style.fontSize = store.style.fontSize + "px")
-        );
+        if (app) {
+          [...app.children].forEach(
+            (item) =>
+              ((item as HTMLElement).style.fontSize =
+                store.style.fontSize + "px")
+          );
+        }
       }, 0);
       return undefined;
     } else {

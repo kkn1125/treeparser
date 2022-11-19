@@ -6,9 +6,9 @@
  * @author    kimson <chaplet01@gmail.com>
  * @github    https://github.com/kkn1125
  * @written   2022-04-19 13:07:01
- * @modified  2022-07-01 21:38:45
+ * @modified 2022-11-19 17:13:36
  * @since     v0.1.0
- * @currently v0.2.4
+ * @currently v0.3.0
  */
 
 "use strict";
@@ -18,7 +18,7 @@ import { OptionalParser } from "../../core/parser.js";
 /**
  * @since v0.2.2
  */
-const options = {
+const options: InitialOption = {
   app: "#app",
   branches: {
     first: {
@@ -42,4 +42,4 @@ const options = {
 };
 
 const TreeParser = OptionalParser.init(options);
-const parser = new TreeParser();
+const parser = new (TreeParser as any)();

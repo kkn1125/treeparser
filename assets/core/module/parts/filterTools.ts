@@ -6,9 +6,9 @@
  * @author    kimson <chaplet01@gmail.com>
  * @github    https://github.com/kkn1125
  * @written   2022-04-19 13:07:01
- * @modified  2022-07-01 21:38:45
+ * @modified 2022-11-19 17:13:36
  * @since     v0.1.0
- * @currently v0.2.4
+ * @currently v0.3.0
  */
 
 "use strict";
@@ -32,7 +32,7 @@ import { BLANK, EACH_TEXT } from "./regexp.js";
  * @see    setFirstBranch
  * @since  v0.2.0
  */
-let stack = [];
+let stack: number[] = [];
 
 /**
  * 비교 대상 객체의 내용을 덮어쓰기
@@ -41,20 +41,27 @@ let stack = [];
  * @returns {Object}
  * @since v0.2.1
  */
-function deepCopy(target, compare) {
+function deepCopy(target: InitialOption, compare: InitialOption) {
   let temp = target;
-  for (let key in compare) {
+  let key: InitialOptionKeys | null = null;
+
+  for (key in compare) {
+    if (key === null) continue;
     if (
       !(compare[key] instanceof Array) &&
       compare[key] instanceof Object &&
       typeof compare[key] === "object"
     ) {
-      if (!temp[key]) temp[key] = {};
+      if (!temp[key]) {
+        temp[key] = {};
+      }
+
       temp[key] = deepCopy(temp[key], compare[key] || {});
     } else {
       if (compare[key] instanceof Array) {
         if (
-          compare[key].filter((i) => i !== null && i !== undefined).length > 0
+          compare[key].filter((i: any) => i !== null && i !== undefined)
+            .length > 0
         ) {
           temp[key] = [...compare[key]];
         }
@@ -79,7 +86,7 @@ function deepCopy(target, compare) {
  * @param   {string} line
  * @returns {string}
  */
-function isEmpty(line) {
+function isEmpty(line: string) {
   return line.trim() != "";
 }
 
@@ -90,12 +97,10 @@ function isEmpty(line) {
  * @since v0.1.0
  * @since v0.2.2
  */
-function countMatchedIndencesOrZero(line) {
+function countMatchedIndencesOrZero(line: string) {
   const matcher = line.match(BLANK);
-  // if(line.length > 0 && matcher)
-  // console.log(store.indent)
   return line.length > 0 && matcher
-    ? parseInt(matcher[0].length / (store.indent || 1))
+    ? parseInt((matcher[0].length / (store.indent || 1)).toString())
     : 0;
 }
 
@@ -104,7 +109,7 @@ function countMatchedIndencesOrZero(line) {
  * @param   {string} line
  * @returns {Object}
  */
-function setThirdBranch(line) {
+function setThirdBranch(line: CountIndences) {
   return {
     ...line,
     third:
@@ -116,12 +121,16 @@ function setThirdBranch(line) {
 
 /**
  * 두 번째 브랜치 자식 유무에 따라 브랜치 선택
- * @param   {Object}   line
+ * @param   {CountIndences}   line
  * @param   {Integer}  idx
- * @param   {Object[]} origin
- * @returns {Object}
+ * @param   {CountIndences[]} origin
+ * @returns {CountIndences}
  */
-function setSecondBranch(line, idx, origin) {
+function setSecondBranch(
+  line: CountIndences,
+  idx: number,
+  origin: CountIndences[]
+) {
   let branch = store?.branches?.second?.only || BRANCH_SECOND_ONLY;
 
   if (idx < origin.length - 1) {
@@ -141,10 +150,14 @@ function setSecondBranch(line, idx, origin) {
 
 /**
  * 첫 번째 브랜치 형제가 존재하는지 배열에 담아 브랜치 선택에 사용
- * @param   {Object[]} addedSecondBranchArray
- * @returns {Object[]}
+ * @param   {CountIndences[]} addedSecondBranchArray
+ * @returns {CountIndences}
  */
-function setFirstBranch(line, lineid, origin) {
+function setFirstBranch(
+  line: CountIndences,
+  idx: number,
+  origin: CountIndences[]
+) {
   let finder;
 
   /**
@@ -152,7 +165,7 @@ function setFirstBranch(line, lineid, origin) {
    * 형제가 있어도 내려갈때 막히면 first branch only
    * 형제가 있으면 first branch brother
    */
-  const nextLines = origin.slice(lineid + 1);
+  const nextLines = origin.slice(idx + 1);
 
   for (finder of nextLines) {
     if (!line.vertical) line.vertical = [];
@@ -202,7 +215,11 @@ function setFirstBranch(line, lineid, origin) {
  * @returns  {string}
  * @see      treeFormatter
  */
-function changeBrotherToVertical(vertical, blank, idx) {
+function changeBrotherToVertical(
+  vertical: number[],
+  blank: string,
+  idx: number
+) {
   vertical.forEach((number) => {
     if (idx === number) {
       blank = store?.branches?.vertical || BRANCH_VERTICAL_ONLY;
@@ -218,14 +235,14 @@ function changeBrotherToVertical(vertical, blank, idx) {
  * @param   {string} line
  * @returns {int}
  */
-function treeFormatter(line) {
+function treeFormatter(this: any, line: CountIndences) {
   const { numberOfIndences, vertical, first, second, third, directoryName } =
     line;
 
   const whitespace = "　".repeat(numberOfIndences);
   const whitespaceWithVertical = whitespace
     .split(EACH_TEXT)
-    .map(changeBrotherToVertical.bind(this, vertical))
+    .map(changeBrotherToVertical.bind(this, vertical as number[]))
     .join("");
   // const isFolder = whitespaceWithVertical.match(/\/^/g);
   const isParentFolder =

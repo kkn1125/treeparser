@@ -6,12 +6,10 @@
  * @author    kimson <chaplet01@gmail.com>
  * @github    https://github.com/kkn1125
  * @written   2022-04-19 13:07:01
- * @modified  2022-07-01 21:38:45
+ * @modified 2022-11-19 17:13:36
  * @since     v0.1.0
- * @currently v0.2.4
+ * @currently v0.3.0
  */
-
-"use strict";
 
 import { Controller } from "./module/controller.js";
 
@@ -21,10 +19,10 @@ import { View } from "./module/view.js";
 
 const OptionalParser = (function () {
   return {
-    init(options) {
-      const controller = new Controller();
-      const model = new Model();
-      const view = new View();
+    init(options: InitialOption) {
+      const controller = new (Controller as any)();
+      const model = new (Model as any)();
+      const view = new (View as any)();
 
       controller.init(model);
       model.init(view);
