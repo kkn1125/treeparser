@@ -1,0 +1,37 @@
+/**!
+ * Copyright 2022. kkn1125 All rights reserved.
+ * 
+ * 파일 트리 style : demo 페이지 메인 scss
+ * 
+ * @author    kimson <chaplet01@gmail.com>
+ * @github    https://github.com/kkn1125
+ * @written   2022-04-19 13:07:01
+ * @modified  2022-04-19 21:26:59
+ * @since     v0.1.0
+ * @currently v0.2.2
+ */
+
+@import './base.scss';
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 0 1 100%;
+}
+
+::selection {
+    background-color: $textBackground;
+    color: white;
+}
+
+.display-board {
+    min-height: 400px !important;
+}
