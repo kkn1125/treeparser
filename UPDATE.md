@@ -2,9 +2,12 @@
 
 > author   kimson
 > blog     https://kimson.github.io/
-> modified 2022-07-01 21:44:50
+> modified 2022-11-19 17:13:36
 
-- v0.2.4
+- v0.3.0
+  - 수정:
+    - 타입스크립트로 마이그레이션
+- v0.3.0
   - 수정:
     - 파일트리 폰트 크기 변경 -> 14px
     - manage 함수를 통한 store 관리
